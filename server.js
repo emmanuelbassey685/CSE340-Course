@@ -54,24 +54,25 @@ app.get('/projects', async (req, res) => {
   try {
         const projects = await getAllProjects();
         console.log('Projects:', projects);
-        res.render('projects', { title: "Service Projects", projects: projects});
+        res.render('projects', { title: 'Service Projects', projects: projects});
 
     } catch (err) {
-        console.error("Route Error:", err);
+        console.error('Route Error:', err);
         res.render('projects', { title: 'Service Projects', projects: [] });
     }
 });
 
 // Categories route: retrieves categories from the database and renders the EJS view
 app.get("/categories", async (req, res) => {
+
     try {
         const categories = await getAllCategories();
-        console.log("Categories:", categories);
-        res.render("categories", { title: 'Categories', categories });
+        console.log('Categories:', categories);
+        res.render('categories', { title: 'Categories', categories: categories });
  
     } catch (err) {
-        console.error(err);
-        res.status(500).send("Database Error");
+        console.error('Route Error:', err);
+        res.render('categories', { title: 'Categories', categories: [] });
     }
 });
 
