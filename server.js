@@ -4,7 +4,7 @@ import path from 'path';
 import { testConnection } from './src/models/db.js';
 import { getAllOrganizations } from './src/models/organizations.js';
 import { getAllProjects } from './src/models/projects.js';
-import { getAllCategories } from "./src/models/categories.js";
+import { getAllCategories } from './src/models/categories.js';
 
 // Define the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
@@ -68,12 +68,13 @@ app.get("/categories", async (req, res) => {
         const categories = await getAllCategories();
         console.log("Categories:", categories);
         res.render("categories", { title: 'Categories', categories });
-
+ 
     } catch (err) {
         console.error(err);
         res.status(500).send("Database Error");
     }
 });
+
 
 app.listen(PORT, async () => {
 
