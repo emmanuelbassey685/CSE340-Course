@@ -1,33 +1,29 @@
 <%- include('partials/header') %>
-<main>    
-    <h1><%= title %></h1>  
-    <p>Below are the current service projects.</p>
-    <% if (projects && projects.length > 0) { %>
-            <ul class='projects-list'>
-                <% projects.forEach(project => { %>
-                <li>
-                    <img src="/images/<%= project.logo_filename %>" alt="<%= project.organization_name %> logo">
-                    
-                    <strong>
-                        <%= new Date(project.project_date).toLocaleDateString("en-US", {
-                            weekday: "long",
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric"
-                        }) %>
-                    </strong>
-                    
-                    :
-                    <%= project.title %>
-                    <%= project.organization_name %>
-                </li>
-            <% }) %>
-            </ul>
-    <% } else { %>
+<h1>Upcoming Service Projects</h1>
+<div class="projects-grid">
+<% projects.forEach(project => { %>
+    <div class="project-card">
+        <h2>
+            <a href="/project/<%= project.project_id %>">
+                <%= project.title %>
+            </a>
+        </h2>
+        <p>
+            <strong>Date:</strong>
+            <%= project.project_date.toLocaleDateString() %>
+        </p>
+        <p>
+            <strong>Location:</strong>
+            <%= project.location %>
+        </p>
+        <p>
+            <strong>Organization:</strong>
 
-        <p>No service projects found.</p>
-
-    <% } %>
-</main>
+            <a href="/organization/<%= project.organization_id %>">
+                <%= project.organization_name %>
+            </a>
+        </p>
+    </div>
+<% }) %>
+</div>
 <%- include('partials/footer') %>
-

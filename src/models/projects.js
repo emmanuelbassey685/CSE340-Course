@@ -1,6 +1,55 @@
-import pool from './db.js';
+import db from "./db.js";
 
+/**
+ * Get all service projects
+ */
 const getAllProjects = async () => {
+    const query = `
+        SELECT
+            sp.project_id,
+            sp.title,
+            sp.description,
+            sp.location,
+            sp.project_date,
+            sp.organization_id,
+            o.name AS organization_name
+        FROM service_project sp
+        JOIN organization o
+            ON sp.organization_id = o.organization_id
+        ORDER BY o.name, sp.project_date;
+    `;
+
+    const result = await db.query(query);
+    return result.rows;
+};
+
+/**
+ * Get projects for one organization
+ */
+const getProjectsByOrganizationId = async (organizationId) => {
+
+    const query = `
+        SELECT
+            project_id,
+            organization_id,
+            title,
+            description,
+            location,
+            project_date
+        FROM service_project
+        WHERE organization_id = $1
+        ORDER BY project_date;
+    `;
+
+    const result = await db.query(query,[organizationId]);
+
+    return result.rows;
+};
+
+/**
+ * Get the next upcoming projects
+ */
+const getUpcomingProjects = async (numberOfProjects) => {
 
     const query = `
         SELECT
@@ -9,20 +58,49 @@ const getAllProjects = async () => {
             sp.description,
             sp.location,
             sp.project_date,
-            o.organization_name
+            sp.organization_id,
+            o.name AS organization_name
         FROM service_project sp
-        JOIN organization o ON sp.organization_id = o.organization_id
-        ORDER BY o.organization_name, sp.project_date;
+        JOIN organization o
+            ON sp.organization_id = o.organization_id
+        WHERE sp.project_date >= CURRENT_DATE
+        ORDER BY sp.project_date
+        LIMIT $1;
     `;
 
-    try {
-        const result = await pool.query(query);
-        return result.rows;
-    } catch (error) {
-        console.error('Error in getAllProjects', error);
-        return [];
-    }
-}
+    const result = await db.query(query,[numberOfProjects]);
 
-export {getAllProjects}
+    return result.rows;
+};
 
+/**
+ * Get one project
+ */
+const getProjectDetails = async (projectId) => {
+
+    const query = `
+        SELECT
+            sp.project_id,
+            sp.title,
+            sp.description,
+            sp.location,
+            sp.project_date,
+            sp.organization_id,
+            o.name AS organization_name
+        FROM service_project sp
+        JOIN organization o
+            ON sp.organization_id = o.organization_id
+        WHERE sp.project_id = $1;
+    `;
+
+    const result = await db.query(query,[projectId]);
+
+    return result.rows[0];
+};
+
+export {
+    getAllProjects,
+    getProjectsByOrganizationId,
+    getUpcomingProjects,
+    getProjectDetails
+};
