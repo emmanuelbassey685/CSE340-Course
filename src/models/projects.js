@@ -98,9 +98,31 @@ const getProjectDetails = async (projectId) => {
     return result.rows[0];
 };
 
+/**
+ * Get all categories for one project
+ */
+const getCategoriesByProjectId = async (projectId) => {
+
+    const query = `
+        SELECT
+            c.category_id,
+            c.name
+        FROM category c
+        JOIN service_project_category spc
+            ON c.category_id = spc.category_id
+        WHERE spc.project_id = $1
+        ORDER BY c.name;
+    `;
+
+    const result = await db.query(query, [projectId]);
+
+    return result.rows;
+};
+
 export {
     getAllProjects,
     getProjectsByOrganizationId,
     getUpcomingProjects,
-    getProjectDetails
+    getProjectDetails,
+    getCategoriesByProjectId
 };

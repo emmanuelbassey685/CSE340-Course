@@ -67,31 +67,82 @@ INSERT INTO service_project (organization_id,title,description,location,project_
 (3,'Hospital Volunteer Day', 'Assist hospital staff.', 'Ibadan', '2026-10-25'), 
 (3,'Christmas Food Distribution', 'Provide food packages.', 'Makurdi', '2026-12-18');
 
-CREATE TABLE categories (
+SELECT COUNT(*) FROM organization;
+
+SELECT COUNT(*) FROM service_project;
+
+SELECT * FROM organization;
+
+SELECT * FROM service_project;
+
+-- ========================================
+-- Category Table
+-- ========================================
+
+CREATE TABLE category (
     category_id SERIAL PRIMARY KEY,
-    category_name VARCHAR(100) NOT NULL UNIQUE
+    name VARCHAR(100) NOT NULL,
+    description TEXT
 );
 
-CREATE TABLE project_categories (
-    project_id INT NOT NULL,
-    category_id INT NOT NULL,
+INSERT INTO category (name, description)
+VALUES
+('Community Service', 'Projects that improve local communities.'),
+('Education', 'Projects that promote education and learning.'),
+('Environment', 'Projects focused on environmental improvement.'),
+('Health', 'Projects related to health and wellness.');
+
+-- ========================================
+-- Service Project Categories
+-- ========================================
+
+CREATE TABLE service_project_category (
+    project_id INTEGER NOT NULL,
+    category_id INTEGER NOT NULL,
 
     PRIMARY KEY (project_id, category_id),
 
-    FOREIGN KEY (project_id)
-        REFERENCES projects(project_id)
+    CONSTRAINT fk_project
+        FOREIGN KEY (project_id)
+        REFERENCES service_project(project_id)
         ON DELETE CASCADE,
 
-    FOREIGN KEY (category_id)
-        REFERENCES categories(category_id)
+    CONSTRAINT fk_category
+        FOREIGN KEY (category_id)
+        REFERENCES category(category_id)
         ON DELETE CASCADE
 );
 
-INSERT INTO categories (category_name)
-VALUES
-('Environmental'), ('Education'), ('Health & Wellness');
+INSERT INTO service_project_category (project_id, category_id) VALUES
+(1,1),
+(2,2),
+(3,3),
+(4,4),
+(5,4),
 
-INSERT INTO project_categories (project_id, category_id)
-VALUES
-(1,1), (1,2), (2,3), (3,1);
+(6,3),
+(7,1),
+(8,2),
+(9,4),
+(10,1),
 
+(11,1),
+(12,2),
+(13,3),
+(14,4),
+(15,1),
+
+-- Projects with multiple categories
+(3,1),
+(8,1),
+(9,1),
+(5,1),
+(13,1); 
+
+SELECT COUNT(*) FROM category;
+
+SELECT COUNT(*) FROM service_project_category;
+
+SELECT * FROM category;
+
+SELECT * FROM service_project_category;
