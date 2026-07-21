@@ -1,9 +1,15 @@
 import express from "express";
 import { showHomePage } from "./controllers/index.js";
-import { showOrganizationsPage, showOrganizationDetailsPage } from "./controllers/organizations.js";
 import { showProjectsPage, showProjectDetailsPage } from "./controllers/projects.js";
 import { showCategoriesPage, showCategoryDetailsPage } from "./controllers/categories.js";
 import { testErrorPage } from "./controllers/errors.js";
+import {
+    showOrganizationDetailsPage,
+    showOrganizationsPage,
+    showNewOrganizationForm,
+    processNewOrganizationForm,
+    organizationValidation
+} from './controllers/organizations.js';
 
 const router = express.Router();
 
@@ -22,5 +28,11 @@ router.get("/categories", showCategoriesPage);
 router.get("/category/:id", showCategoryDetailsPage);
 
 router.get("/test-error", testErrorPage);
+
+// Route for new organization page
+router.get('/new-organization', showNewOrganizationForm);
+
+// Route to handle new organization form submission
+router.post('/new-organization', organizationValidation, processNewOrganizationForm);
 
 export default router;
