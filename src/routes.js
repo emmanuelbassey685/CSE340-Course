@@ -1,20 +1,12 @@
 import express from "express";
-import { showHomePage } from "./controllers/index.js";
-import { showProjectsPage, showProjectDetailsPage } from "./controllers/projects.js";
-import { showCategoriesPage, showCategoryDetailsPage, showAssignCategoriesForm, 
-    processAssignCategoriesForm
- } from "./controllers/categories.js";
 import { testErrorPage } from "./controllers/errors.js";
-import { showNewProjectForm, processNewProjectForm, projectValidation } from "./controllers/projects.js"
-import {
-    showOrganizationDetailsPage,
-    showOrganizationsPage,
-    showNewOrganizationForm,
-    processNewOrganizationForm,
-    organizationValidation,
-    showEditOrganizationForm,
-    processEditOrganizationForm
-} from './controllers/organizations.js';
+import { showHomePage } from "./controllers/index.js";
+import { showCategoriesPage, showCategoryDetailsPage, showAssignCategoriesForm, 
+    processAssignCategoriesForm } from "./controllers/categories.js";
+import { showProjectsPage, showProjectDetailsPage, showNewProjectForm, processNewProjectForm, 
+    projectValidation, showEditProjectForm, processEditProjectForm } from "./controllers/projects.js";
+import { showOrganizationDetailsPage, showOrganizationsPage, showNewOrganizationForm, processNewOrganizationForm, 
+    organizationValidation, showEditOrganizationForm, processEditOrganizationForm } from './controllers/organizations.js';
 
 const router = express.Router();
 
@@ -57,5 +49,9 @@ router.post('/new-project', processNewProjectForm);
 // Routes to handle the assign categories to project form
 router.get('/assign-categories/:projectId', showAssignCategoriesForm);
 router.post('/assign-categories/:projectId', processAssignCategoriesForm);
+
+// Edit Project Route handler
+router.get('/edit-project/:id', showEditProjectForm);
+router.post('/edit-project/:id', processEditProjectForm);
 
 export default router;
