@@ -1,10 +1,20 @@
 <%- include('partials/header') %>
 <h1>Service Project Categories</h1>
+<p>
+    <a class="button" href="/new-category">
+        + Add New Category
+    </a>
+</p>
 <ul>
     <% categories.forEach(category => { %>
-        <li>
+        <li class="category-item">            
+            
             <a href="/category/<%= category.category_id %>">
                 <%= category.name %>
+            </a>
+            
+            <a href="/edit-category/<%= category.category_id %>">
+                Edit
             </a>
         </li>
     <% }) %>

@@ -2,13 +2,16 @@ import express from "express";
 import { testErrorPage } from "./controllers/errors.js";
 import { showHomePage } from "./controllers/index.js";
 import { showCategoriesPage, showCategoryDetailsPage, showAssignCategoriesForm, 
-    processAssignCategoriesForm } from "./controllers/categories.js";
+    processAssignCategoriesForm, showNewCategoryForm, processNewCategoryForm, showEditCategoryForm, 
+    processEditCategoryForm } from "./controllers/categories.js";
 import { showProjectsPage, showProjectDetailsPage, showNewProjectForm, processNewProjectForm, 
     projectValidation, showEditProjectForm, processEditProjectForm } from "./controllers/projects.js";
 import { showOrganizationDetailsPage, showOrganizationsPage, showNewOrganizationForm, processNewOrganizationForm, 
     organizationValidation, showEditOrganizationForm, processEditOrganizationForm } from './controllers/organizations.js';
+import { categoryRules, checkCategoryData } from "./middleware/validation.js";
 
 const router = express.Router();
+console.log("✅ src/routes.js loaded");
 
 router.get("/", showHomePage);
 
@@ -41,10 +44,8 @@ router.post('/edit-organization/:id', organizationValidation, processEditOrganiz
 // Route for new project page
 router.get('/new-project', showNewProjectForm);
 
-router.post('/new-project', projectValidation);
-
 // Route to handle new project form submission
-router.post('/new-project', processNewProjectForm);
+router.post('/new-project', projectValidation, processNewProjectForm);
 
 // Routes to handle the assign categories to project form
 router.get('/assign-categories/:projectId', showAssignCategoriesForm);
@@ -52,6 +53,14 @@ router.post('/assign-categories/:projectId', processAssignCategoriesForm);
 
 // Edit Project Route handler
 router.get('/edit-project/:id', showEditProjectForm);
-router.post('/edit-project/:id', processEditProjectForm);
+router.post('/edit-project/:id', projectValidation, processEditProjectForm);
+
+// New Category
+router.get("/new-category", showNewCategoryForm );
+router.post('/new-category', categoryRules(), checkCategoryData, processNewCategoryForm);
+
+//Edit Category
+router.get('/edit-category/:id', showEditCategoryForm);
+router.post('/edit-category/:id', categoryRules(), checkCategoryData, processEditCategoryForm);
 
 export default router;

@@ -62,6 +62,11 @@ app.use((req, res, next) => {
 });
 
 // Use the imported router to handle routes
+app.get("/hello", (req, res) => {
+    console.log("HELLO ROUTE HIT");
+    res.send("Hello World");
+});
+
 app.use(router);
 
 // Catch-all route for 404 errors
