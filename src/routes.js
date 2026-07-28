@@ -9,6 +9,9 @@ import { showProjectsPage, showProjectDetailsPage, showNewProjectForm, processNe
 import { showOrganizationDetailsPage, showOrganizationsPage, showNewOrganizationForm, processNewOrganizationForm, 
     organizationValidation, showEditOrganizationForm, processEditOrganizationForm } from './controllers/organizations.js';
 import { categoryRules, checkCategoryData } from "./middleware/validation.js";
+import { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout,
+    requireLogin, showDashboard } from "./controllers/users.js";
+
 
 const router = express.Router();
 console.log("✅ src/routes.js loaded");
@@ -62,5 +65,17 @@ router.post('/new-category', categoryRules(), checkCategoryData, processNewCateg
 //Edit Category
 router.get('/edit-category/:id', showEditCategoryForm);
 router.post('/edit-category/:id', categoryRules(), checkCategoryData, processEditCategoryForm);
+
+// User registration routes
+router.get('/register', showUserRegistrationForm);
+router.post('/register', processUserRegistrationForm);
+
+// User login routes
+router.get('/login', showLoginForm);
+router.post('/login', processLoginForm);
+router.get('/logout', processLogout);
+
+// Protected dashboard route
+router.get('/dashboard', requireLogin, showDashboard);
 
 export default router;
