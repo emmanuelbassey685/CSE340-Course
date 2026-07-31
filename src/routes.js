@@ -10,7 +10,7 @@ import { showOrganizationDetailsPage, showOrganizationsPage, showNewOrganization
     organizationValidation, showEditOrganizationForm, processEditOrganizationForm } from './controllers/organizations.js';
 import { categoryRules, checkCategoryData } from "./middleware/validation.js";
 import { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout,
-    requireLogin, showDashboard, requireRole } from "./controllers/users.js";
+    requireLogin, showDashboard, requireRole, usersPage } from "./controllers/users.js";
 
 
 const router = express.Router();
@@ -77,5 +77,8 @@ router.get('/logout', processLogout);
 
 // Protected dashboard route
 router.get('/dashboard', requireLogin, showDashboard);
+
+// Admin-only users page
+router.get("/users", requireLogin, requireRole("admin"), usersPage);
 
 export default router;
