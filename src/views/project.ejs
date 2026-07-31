@@ -28,9 +28,12 @@
                 <%= category.name %>
             </a>
         <% }) %>
+    </div>
 </div>
 
-<p><a href="/assign-categories/<%= project.project_id %>">Edit Categories</a> </p>
+<% if (user && user.role_name === "admin") { %>
+    <a href="/assign-categories/<%= project.project_id %>">Edit Categories</a> 
+<% } %>
 <p>
     <a href="/projects">
         ← Back to Upcoming Projects
