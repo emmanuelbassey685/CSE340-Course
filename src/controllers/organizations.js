@@ -5,9 +5,13 @@ import { body, validationResult } from 'express-validator';
 // Define any controller functions
 const showOrganizationsPage = async (req, res) => {
     const organizations = await getAllOrganizations();
-    const title = 'Our Partner Organizations';
+    const title = "Our Partner Organizations";
 
-    res.render('organizations', { title, organizations });
+    res.render("organizations", {
+        title,
+        organizations,
+        user: req.session.user || null
+    });
 };
 
 const showOrganizationDetailsPage = async (req, res) => {
@@ -16,7 +20,7 @@ const showOrganizationDetailsPage = async (req, res) => {
     const projects = await getProjectsByOrganizationId(organizationId);
     const title = 'Organization Details';
 
-    res.render('organization', { title, organizationDetails, projects });
+    res.render('organization', { title, organizationDetails, projects, user: req.session.user || null });
 };
 
 const showNewOrganizationForm = async (req, res) => {

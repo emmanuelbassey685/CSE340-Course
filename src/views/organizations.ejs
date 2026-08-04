@@ -25,9 +25,13 @@
                 : <%= org.contact_email %>
 
                 |
-                <a href="/edit-organization/<%= org.organization_id %>">
-                    Edit
-                </a>
+
+                <% if (locals.user && locals.user.role_name === "admin") { %>
+                    <a href="/edit-organization/<%= org.organization_id %>">
+                        Edit
+                    </a>
+                <% } %>
+                
             </li>
         <% }) %>
     </ul>

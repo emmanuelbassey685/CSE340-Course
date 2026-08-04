@@ -39,7 +39,7 @@ router.get('/new-organization', requireRole("admin"), showNewOrganizationForm);
 router.post('/new-organization', requireRole("admin"), organizationValidation, processNewOrganizationForm);
 
 // Route to display the edit organization form
-router.get('/edit-organization/:id', requireRole("admin"), showEditOrganizationForm);
+router.get('/edit-organization/:id',  requireLogin, requireRole("admin"), showEditOrganizationForm);
 
 // Route to handle the edit organization form submission
 router.post('/edit-organization/:id', requireRole("admin"), organizationValidation, processEditOrganizationForm);
