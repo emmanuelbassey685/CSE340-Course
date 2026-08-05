@@ -6,17 +6,11 @@
     <h2>Dashboard</h2>
     <p>Name: <%= name %></p>
     <p>Username: <%= email %></p>
-    <hr>
 
+    <hr>
     <h2>My Volunteer Projects</h2>
 
-    <% if (volunteerProjects.length === 0) { %>
-
-        <p>
-            You have not volunteered for any projects yet.
-        </p>
-
-    <% } else { %>
+    <% if (volunteerProjects.length > 0) { %>
 
         <ul>
 
@@ -24,16 +18,13 @@
 
                 <li>
 
-                    <a href="/project/<%= project.project_id %>">
-                        <%= project.title %>
-                    </a>
+                    <strong><%= project.title %></strong>
 
                     (<%= project.project_date.toLocaleDateString() %>)
 
-                    <form
-                        action="/project/<%= project.project_id %>/remove-volunteer"
+                    <form action="/project/<%= project.project_id %>/remove-volunteer"
                         method="POST"
-                        style="display:inline; margin-left:10px;">
+                        style="display:inline;">
 
                         <button type="submit">
                             Remove
@@ -46,6 +37,10 @@
             <% }) %>
 
         </ul>
+
+    <% } else { %>
+
+        <p>You have not volunteered for any projects yet.</p>
 
     <% } %>
 
