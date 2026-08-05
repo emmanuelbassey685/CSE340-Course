@@ -6,6 +6,48 @@
     <h2>Dashboard</h2>
     <p>Name: <%= name %></p>
     <p>Username: <%= email %></p>
+    <hr>
+
+    <h2>My Volunteer Projects</h2>
+
+    <% if (volunteerProjects.length === 0) { %>
+
+        <p>
+            You have not volunteered for any projects yet.
+        </p>
+
+    <% } else { %>
+
+        <ul>
+
+            <% volunteerProjects.forEach(project => { %>
+
+                <li>
+
+                    <a href="/project/<%= project.project_id %>">
+                        <%= project.title %>
+                    </a>
+
+                    (<%= project.project_date.toLocaleDateString() %>)
+
+                    <form
+                        action="/project/<%= project.project_id %>/remove-volunteer"
+                        method="POST"
+                        style="display:inline; margin-left:10px;">
+
+                        <button type="submit">
+                            Remove
+                        </button>
+
+                    </form>
+
+                </li>
+
+            <% }) %>
+
+        </ul>
+
+    <% } %>
 
     <% if (user && user.role_name === "admin") { %>
         <div class="admin-tools">

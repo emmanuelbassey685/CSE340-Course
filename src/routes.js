@@ -11,7 +11,7 @@ import { showOrganizationDetailsPage, showOrganizationsPage, showNewOrganization
 import { categoryRules, checkCategoryData } from "./middleware/validation.js";
 import { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout,
     requireLogin, showDashboard, requireRole, usersPage } from "./controllers/users.js";
-
+import { volunteerForProject, removeVolunteerFromProject } from "./controllers/volunteers.js";
 
 const router = express.Router();
 console.log("✅ src/routes.js loaded");
@@ -80,5 +80,9 @@ router.get('/dashboard', requireLogin, showDashboard);
 
 // Admin-only users page
 router.get("/users", requireLogin, requireRole("admin"), usersPage);
+
+// Volunteer Routes
+router.post("/project/:id/volunteer", requireLogin, volunteerForProject);
+router.post("/project/:id/remove-volunteer", requireLogin, removeVolunteerFromProject);
 
 export default router;

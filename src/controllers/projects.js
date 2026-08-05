@@ -3,6 +3,7 @@ import { getUpcomingProjects, getProjectDetails, getCategoriesByProjectId, creat
  } from "../models/projects.js";
 import { getAllOrganizations } from "../models/organizations.js";
 import { body, validationResult } from 'express-validator';
+import { isVolunteer } from "../models/volunteers.js";
 
 const NUMBER_OF_UPCOMING_PROJECTS = 5;
 
@@ -43,20 +44,33 @@ const showProjectsPage = async (req,res) => {
  */
 const showProjectDetailsPage = async (req, res) => {
     const id = req.params.id;
+
     const project = await getProjectDetails(id);
+
     if (!project) {
         return res.status(404).render("error", {
             title: "Project Not Found",
             message: "Project not found."
         });
     }
+
     const categories =
         await getCategoriesByProjectId(id);
+
+    let userIsVolunteer = false;
+
+    if (req.session.user) {
+        userIsVolunteer = await isVolunteer(
+            req.session.user.user_id,
+            id
+        );
+    }
 
     res.render("project", {
         title: project.title,
         project,
-        categories
+        categories,
+        userIsVolunteer
     });
 };
 
